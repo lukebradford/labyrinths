@@ -33,6 +33,7 @@ let outAt = []; // per maze: when its thread left by the exit
 let geo = null;
 let edges = []; // per maze: the template edges that are carved away
 let start = 0, end = 0, frame = 0;
+let born = null; // when the page first drew: the lattice fades up from white once
 
 // ---------------------------------------------------------------- rooms
 
@@ -66,6 +67,7 @@ function show(next, animate) {
   place();
   start = performance.now();
   if (!animate || reduceMotion.matches) start -= 1e6;
+  if (born === null) born = start;
   document.body.classList.toggle("carved", !animate || reduceMotion.matches);
   loop();
 }
@@ -210,7 +212,7 @@ function draw(now) {
   for (const [x, y, w, h] of geo.clear) ctx.rect(x, y, w, h);
   ctx.clip("evenodd");
   ctx.strokeStyle = INK;
-  ctx.globalAlpha = LATTICE_ALPHA;
+  ctx.globalAlpha = LATTICE_ALPHA * ease((now - born) / 350);
   ctx.lineWidth = 1;
   ctx.beginPath();
   for (let x = ox; x <= vw; x += s) { ctx.moveTo(x, 0); ctx.lineTo(x, vh); }
