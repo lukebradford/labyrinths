@@ -88,5 +88,15 @@
       "Their colour comes from a diagonal canvas gradient, lattice grey to ink, with a soft front moving from top left to bottom right",
       "Settled poems are unchanged, pixel for pixel"
     ]
+  },
+  {
+    "id": 8,
+    "date": "2026-11-02T22:30:23.459Z",
+    "title": "Out of white",
+    "summary": "The full-width walls no longer appear all at once when a room opens: they fade up from white to the grey of the lattice, then darken to ink in the same diagonal sweep.",
+    "details": [
+      "Wall colour rises from white over the first 350 ms, blending into the grey-to-ink gradient",
+      "Settled poems are unchanged, pixel for pixel"
+    ]
   }
 ]

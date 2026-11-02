@@ -175,22 +175,25 @@ function buildEdges(m) {
 
 const ease = (t) => (t <= 0 ? 0 : t >= 1 ? 1 : 1 - Math.pow(1 - t, 3));
 
-// The ink, and the grey the lattice makes of it on white paper.
+// The ink on white paper: f fades it up from nothing to the grey of the
+// lattice, and k darkens it from there to full ink.
 const INK_RGB = [1, 3, 5].map((i) => parseInt(INK.slice(i, i + 2), 16));
-const shade = (k) => {
-  const a = LATTICE_ALPHA + (1 - LATTICE_ALPHA) * k;
+const shade = (f, k) => {
+  const a = LATTICE_ALPHA * f + (1 - LATTICE_ALPHA) * k;
   return `rgb(${INK_RGB.map((c) => Math.round(255 + (c - 255) * a)).join(",")})`;
 };
 
-// A gradient along the maze's diagonal: grey at first, darkening to ink in a
-// soft front that sweeps from the top left corner to the bottom right.
+// A gradient along the maze's diagonal: the walls fade in from white to grey,
+// then darken to ink in a soft front that sweeps from the top left corner to
+// the bottom right.
 function darkening(m, mx, my, s, t) {
+  const f = ease(t / 350);
   const d = ((m.W + m.H) / 2) * s;
   const g = ctx.createLinearGradient(mx, my, mx + d, my + d);
   const N = 32;
   for (let i = 0; i < N; i++) {
     const p = i / (N - 1);
-    g.addColorStop(p, shade(ease((t - 100 - 650 * p) / 420)));
+    g.addColorStop(p, shade(f, ease((t - 100 - 650 * p) / 420)));
   }
   return g;
 }
