@@ -1,6 +1,6 @@
 # Vision
 
-**Labÿrínta is a place to walk Luke Bradford's published maze poems.** Each poem appears exactly as it was published, wall for wall, carved out of a sheet of graph paper. Then the visitor takes Ariadne's thread in at the entrance, walks the letters, and leaves by the exit into the next poem. The poems are the site. Everything else (the lattice, the carving, the thread, the order of the rooms) is staging for them.
+**Labyrinths is a place to walk Luke Bradford's published maze poems.** Each poem appears exactly as it was published, wall for wall, carved out of a sheet of graph paper. Then the visitor takes Ariadne's thread in at the entrance, walks the letters, and leaves by the exit into the next poem. The poems are the site. Everything else (the lattice, the carving, the thread, the order of the rooms) is staging for them.
 
 ## The owner's rules (non-negotiable)
 

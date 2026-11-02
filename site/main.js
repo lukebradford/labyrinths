@@ -38,7 +38,7 @@ let start = 0, end = 0, frame = 0;
 
 function safeGet(k) { try { return localStorage.getItem(k); } catch { return null; } }
 function safeSet(k, val) { try { localStorage.setItem(k, val); } catch {} }
-const solved = new Set(JSON.parse(safeGet("labyrinta:solved") || "[]"));
+const solved = new Set(JSON.parse(safeGet("labyrinths:solved") || "[]"));
 
 function fromHash() {
   const slug = decodeURIComponent(location.hash.slice(1));
@@ -47,7 +47,7 @@ function fromHash() {
 
 function show(next, animate) {
   room = next;
-  safeSet("labyrinta:last", room.slug);
+  safeSet("labyrinths:last", room.slug);
   const { poem, k, n } = room;
   threads = room.page.mazes.map(() => null);
   outAt = room.page.mazes.map(() => 0);
@@ -55,7 +55,7 @@ function show(next, animate) {
   title.textContent = poem.title;
   numeral.textContent = n > 1 ? ROMAN[k] : "";
   credit.innerHTML = poem.credit;
-  document.title = `${poem.title}${n > 1 ? " " + ROMAN[k] : ""} · Luke Bradford · Labÿrínta`;
+  document.title = `${poem.title}${n > 1 ? " " + ROMAN[k] : ""} · Luke Bradford · Labyrinths`;
   canvas.setAttribute(
     "aria-label",
     `${poem.title}${n > 1 ? ", " + ROMAN[k] + " of " + ROMAN[n - 1] : ""}, a maze poem by Luke Bradford. The arrow keys walk it from the entrance.`,
@@ -367,7 +367,7 @@ function leave() {
   const more = active < room.page.mazes.length - 1;
   if (!more) {
     solved.add(room.slug);
-    safeSet("labyrinta:solved", JSON.stringify([...solved]));
+    safeSet("labyrinths:solved", JSON.stringify([...solved]));
   }
   setTimeout(() => {
     if (more) { active++; loop(); return; }
@@ -457,5 +457,5 @@ addEventListener("hashchange", () => {
 });
 
 document.documentElement.classList.add("js");
-const lastRoom = ROOMS.find((r) => r.slug === safeGet("labyrinta:last"));
+const lastRoom = ROOMS.find((r) => r.slug === safeGet("labyrinths:last"));
 show(fromHash() || lastRoom || ROOMS[0], true);

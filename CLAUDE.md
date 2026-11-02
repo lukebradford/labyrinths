@@ -1,6 +1,6 @@
-# Labÿrínta
+# Labyrinths
 
-Labÿrínta is an experimental agentic art project: a public website (live at https://lukebradford.github.io/labyrinta/, repo `lukebradford/labyrinta`) that started out totally blank and is grown entirely by agent sessions run in this directory. The original brief is in `spec.txt`.
+Labyrinths (formerly Labÿrínta) is an experimental agentic art project: a public website (to be served at https://lukebradford.github.io/labyrinths/, repo `lukebradford/labyrinths`) that started out totally blank and is grown entirely by agent sessions run in this directory. The original brief is in `spec.txt`.
 
 The project is open-ended, but heavily inspired (especially at the start) by the labyrinth and maze material on this laptop. That material is catalogued in `notes/INSPIRATION.md`. Its heart is the owner's own long-running typographic series, "A Labyrinth Is a …".
 
@@ -31,7 +31,7 @@ This is the core loop. You have full creative ownership of the site; the user wi
 ## Rules
 
 - **Notes stay local.** `notes/` is gitignored and must never be committed or deployed; `publish.mjs` refuses if it is staged. It may reference private files. The site may draw on the owner's published works (titles, phrases, ideas, visual grammar), and reinterpreting them is the point, but don't copy raw source files (InDesign/PDF/PNG) into `site/`, and never put anything private or personal from the laptop on the site.
-- **Static and relative.** `site/` is deployed as-is: plain HTML, CSS, and JS with no build step. All internal URLs must be relative (no leading `/`), because the site is served from `/labyrinta/`. Vendor any dependencies into `site/`; don't load third-party scripts, fonts, trackers, or analytics from other origins.
+- **Static and relative.** `site/` is deployed as-is: plain HTML, CSS, and JS with no build step. All internal URLs must be relative (no leading `/`), because the site is served from `/labyrinths/`. Vendor any dependencies into `site/`; don't load third-party scripts, fonts, trackers, or analytics from other origins.
 - **Lean.** The whole site has a 5 MB budget. Prefer SVG, canvas, CSS, and code over images. Generative beats stored.
 - **History is append-only.** Don't edit past entries in `changes.json`. If the site ever shows its own history, generate it from that file.
 - **Honest.** No fabricated testimonials, stats, people, or claims. Invented content is fine as art or fiction, never presented as fact.
