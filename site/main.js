@@ -16,6 +16,8 @@ const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)");
 
 const LATTICE_ALPHA = 0.1;
 const ROMAN = ["i", "ii", "iii", "iv", "v", "vi"];
+const FADE = 700; // the page and the walls rise out of white
+const DARK = 500; // then the walls start darkening to ink
 
 // One room per published page. Each maze knows its walls, gaps and way out.
 const ROOMS = [];
@@ -157,7 +159,7 @@ function buildEdges(m) {
   const list = [];
   const add = (h, x, y, a, b) => {
     const d = Math.min(a >= 0 ? when(a) : 1e9, b >= 0 ? when(b) : 1e9);
-    list.push({ h, x, y, carve: 1100 + d * dt });
+    list.push({ h, x, y, carve: DARK + 1000 + d * dt });
   };
   for (let y = 0; y <= H; y++) {
     for (let x = 0; x < W; x++) {
@@ -169,13 +171,14 @@ function buildEdges(m) {
       if (!g.vwall[y * (W + 1) + x]) add(0, x, y, x > 0 ? y * W + x - 1 : -1, x < W ? y * W + x : -1);
     }
   }
-  end = Math.max(end, 1100 + maxDist * dt + 450);
+  end = Math.max(end, DARK + 1000 + maxDist * dt + 450);
   return list;
 }
 
 // ---------------------------------------------------------------- drawing
 
 const ease = (t) => (t <= 0 ? 0 : t >= 1 ? 1 : 1 - Math.pow(1 - t, 3));
+const smooth = (t) => (t <= 0 ? 0 : t >= 1 ? 1 : t * t * (3 - 2 * t));
 
 // The ink on white paper: f fades it up from nothing to the grey of the
 // lattice, and k darkens it from there to full ink.
@@ -189,13 +192,13 @@ const shade = (f, k) => {
 // then darken to ink in a soft front that sweeps from the top left corner to
 // the bottom right.
 function darkening(m, mx, my, s, t) {
-  const f = ease(t / 350);
+  const f = smooth(t / FADE);
   const d = ((m.W + m.H) / 2) * s;
   const g = ctx.createLinearGradient(mx, my, mx + d, my + d);
   const N = 32;
   for (let i = 0; i < N; i++) {
     const p = i / (N - 1);
-    g.addColorStop(p, shade(f, ease((t - 100 - 650 * p) / 420)));
+    g.addColorStop(p, shade(f, ease((t - DARK - 650 * p) / 420)));
   }
   return g;
 }
@@ -212,7 +215,7 @@ function draw(now) {
   for (const [x, y, w, h] of geo.clear) ctx.rect(x, y, w, h);
   ctx.clip("evenodd");
   ctx.strokeStyle = INK;
-  ctx.globalAlpha = LATTICE_ALPHA * ease((now - born) / 350);
+  ctx.globalAlpha = LATTICE_ALPHA * smooth((now - born) / FADE);
   ctx.lineWidth = 1;
   ctx.beginPath();
   for (let x = ox; x <= vw; x += s) { ctx.moveTo(x, 0); ctx.lineTo(x, vh); }

@@ -108,5 +108,16 @@
       "The lattice's opacity rises from zero over the same 350 ms as the walls, once per page load; moving between rooms leaves it in place",
       "Settled poems are unchanged, pixel for pixel"
     ]
+  },
+  {
+    "id": 10,
+    "date": "2026-11-02T22:39:00.945Z",
+    "title": "A slower dawn",
+    "summary": "Measured on the live page, the lattice reached more than half its strength within about 70 ms of the first frame, so it still read as appearing at once. The page and walls now rise out of white over 0.7 s on an ease-in-out curve, and the darkening waits until they are grey.",
+    "details": [
+      "Lattice and wall fade-in lengthened from 350 ms to 700 ms, with ease-in-out instead of a front-loaded ease-out",
+      "Darkening sweep and carving start 400 ms later, after the walls have reached grey",
+      "Settled poems are unchanged, pixel for pixel"
+    ]
   }
 ]
