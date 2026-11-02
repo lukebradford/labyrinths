@@ -77,5 +77,16 @@
       "tools/poems/verify.py gains a fourth check: the wall on every cell edge of each published image (petrichor's PNG, The Blasted Tree's PNG, The Minute Review's scan) matches the vector, and every differing pixel lies on a stroke's edge; Rabbit Hole's renders to the published PNG with no differing pixels",
       "The site's canvas still matches MuPDF renders of the sources with zero differing pixels in every room"
     ]
+  },
+  {
+    "id": 7,
+    "date": "2026-11-02T22:27:43.847Z",
+    "title": "Grey before ink",
+    "summary": "The walls no longer start thin and swell to their width as the template darkens. They stand at full width from the first frame, in the grey of the lattice, and darken to ink in one smooth gradient that sweeps across the maze.",
+    "details": [
+      "Template edges and poem walls are drawn at their final stroke width throughout the opening animation",
+      "Their colour comes from a diagonal canvas gradient, lattice grey to ink, with a soft front moving from top left to bottom right",
+      "Settled poems are unchanged, pixel for pixel"
+    ]
   }
 ]

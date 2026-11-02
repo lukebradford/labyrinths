@@ -155,7 +155,7 @@ function buildEdges(m) {
   const list = [];
   const add = (h, x, y, a, b) => {
     const d = Math.min(a >= 0 ? when(a) : 1e9, b >= 0 ? when(b) : 1e9);
-    list.push({ h, x, y, carve: 1100 + d * dt, bold: 100 + 650 * ((x + y) / (W + H)) });
+    list.push({ h, x, y, carve: 1100 + d * dt });
   };
   for (let y = 0; y <= H; y++) {
     for (let x = 0; x < W; x++) {
@@ -174,6 +174,26 @@ function buildEdges(m) {
 // ---------------------------------------------------------------- drawing
 
 const ease = (t) => (t <= 0 ? 0 : t >= 1 ? 1 : 1 - Math.pow(1 - t, 3));
+
+// The ink, and the grey the lattice makes of it on white paper.
+const INK_RGB = [1, 3, 5].map((i) => parseInt(INK.slice(i, i + 2), 16));
+const shade = (k) => {
+  const a = LATTICE_ALPHA + (1 - LATTICE_ALPHA) * k;
+  return `rgb(${INK_RGB.map((c) => Math.round(255 + (c - 255) * a)).join(",")})`;
+};
+
+// A gradient along the maze's diagonal: grey at first, darkening to ink in a
+// soft front that sweeps from the top left corner to the bottom right.
+function darkening(m, mx, my, s, t) {
+  const d = ((m.W + m.H) / 2) * s;
+  const g = ctx.createLinearGradient(mx, my, mx + d, my + d);
+  const N = 32;
+  for (let i = 0; i < N; i++) {
+    const p = i / (N - 1);
+    g.addColorStop(p, shade(ease((t - 100 - 650 * p) / 420)));
+  }
+  return g;
+}
 
 function draw(now) {
   const t = now - start;
@@ -199,18 +219,19 @@ function draw(now) {
   ctx.fillStyle = INK;
   ctx.lineCap = "butt";
   const settled = t >= end;
-  const b = ease((t - 100) / 1000); // the template darkening
   room.page.mazes.forEach((m, mi) => {
     const mx = left + m.x * s, my = top + m.y * s, sw = m.stroke * s, half = m.stroke / 2;
+    // Walls stand at their full width from the start, in the grey of the
+    // lattice, and darken to ink in one smooth sweep across the maze.
+    ctx.lineWidth = sw;
+    if (!settled) ctx.strokeStyle = darkening(m, mx, my, s, t);
 
     // Template edges that are not part of the poem, until they fall away.
     if (!settled) {
       for (const e of edges[mi]) {
         const c = ease((t - e.carve) / 300);
         if (c >= 1) continue;
-        const k = ease((t - e.bold) / 420);
-        ctx.globalAlpha = (LATTICE_ALPHA + (1 - LATTICE_ALPHA) * k) * (1 - c);
-        ctx.lineWidth = 1 + (sw - 1) * k;
+        ctx.globalAlpha = 1 - c;
         const shrink = c * 0.5;
         ctx.beginPath();
         if (e.h) {
@@ -225,8 +246,7 @@ function draw(now) {
     }
 
     // The poem: every segment exactly as in the published PDF.
-    ctx.globalAlpha = settled ? 1 : LATTICE_ALPHA + (1 - LATTICE_ALPHA) * b;
-    ctx.lineWidth = settled ? sw : 1 + (sw - 1) * b;
+    ctx.globalAlpha = 1;
     ctx.beginPath();
     const sg = m.segs;
     for (let j = 0; j < sg.length; j += 4) {
@@ -235,6 +255,7 @@ function draw(now) {
     }
     ctx.stroke();
   });
+  ctx.strokeStyle = INK;
   ctx.globalAlpha = 1;
   drawThreads(t);
   return t;
